@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 
 
 public class inicio extends javax.swing.JFrame {
-
+    private String nombres = "";
     private File editFile;
     private List<File> colaArchivos;
     public inicio() {
@@ -55,6 +55,11 @@ public class inicio extends javax.swing.JFrame {
         jScrollPane1.setViewportView(txtTexto);
 
         jButton2.setText("Procesar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -88,6 +93,7 @@ public class inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
         JFileChooser fc = new JFileChooser();
         fc.setFileFilter(new javax.swing.filechooser.FileFilter()
         {
@@ -105,46 +111,19 @@ public class inicio extends javax.swing.JFrame {
         });
 
         if (fc.showDialog(this, "Abrir") != JFileChooser.CANCEL_OPTION)
-        {
-            FileReader fr = null;
-            try
-            {
+        {//CAMBIO
                 editFile = fc.getSelectedFile();
-                fr = new FileReader(editFile);
-                BufferedReader br = new BufferedReader(fr);
-                StringBuffer buff = new StringBuffer();
-                String aux = br.readLine();
-                while (aux != null)
-                {
-                    buff.append(aux + "\n");
-                    aux = br.readLine();
-                }
-                br.close();
-                txtTexto.setText(buff.toString());
-                setTitle("Mi Editor [" + editFile.getName() + "]");
-            }
-            catch (FileNotFoundException ex)
-            {
-                JOptionPane.showMessageDialog(this, "El archivo no existe!!!", "Error", JOptionPane.ERROR_MESSAGE);
-                Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            catch (IOException ex)
-            {
-                Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            finally
-            {
-                try
-                {
-                    fr.close();
-                }
-                catch (IOException ex)
-                {
-                    Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+                colaArchivos.add(editFile);    
+                nombres += editFile.getName()+ "\n";
+                txtTexto.setText(nombres);
+                String tex = "Cargando archivos..";
+                setTitle("Mi Editor [" + tex +"]");       
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -181,6 +160,19 @@ public class inicio extends javax.swing.JFrame {
         });
     }
 
+    public List<File> getColaArchivos() {
+        return colaArchivos;
+    }
+
+    public void setColaArchivos(List<File> colaArchivos) {
+        this.colaArchivos = colaArchivos;
+    }
+    
+    public int getTamaño(){
+        return colaArchivos.size();
+    }
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
